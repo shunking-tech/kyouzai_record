@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kouzai_record/page/edit_data.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -16,6 +17,14 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: Text("text"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.edit),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => EditData()
+          ));
+        },
       ),
     );
   }
