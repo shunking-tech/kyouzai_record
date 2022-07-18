@@ -8,6 +8,7 @@ class EditData extends StatefulWidget {
 }
 
 class _EditDataState extends State<EditData> {
+  DateTime dateTime = DateTime.now();
   TextEditingController titleEditingController = TextEditingController();
   TextEditingController memoEditingController = TextEditingController();
   double sliderValue = 0.0;
@@ -20,6 +21,22 @@ class _EditDataState extends State<EditData> {
       ),
       body: Column(
         children: [
+          ElevatedButton(
+            child: Text(dateTime.toString()),
+            onPressed: () async {
+              DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: dateTime,
+                  firstDate: new DateTime(2020),
+                  lastDate: new DateTime.now().add(new Duration(days: 365))
+              );
+              if(picked != null) {
+                setState(() {
+                  dateTime = picked;
+                });
+              }
+            },
+          ),
           TextField(
             controller: titleEditingController,
             decoration: InputDecoration(
@@ -64,6 +81,8 @@ class _EditDataState extends State<EditData> {
           ElevatedButton(
             child: Text("保存"),
             onPressed: () {
+              print("日時");
+              print(dateTime);
               print("タイトル");
               print(titleEditingController.text);
               print("メモ");
