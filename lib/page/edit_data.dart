@@ -27,8 +27,8 @@ class _EditDataState extends State<EditData> {
               DateTime? picked = await showDatePicker(
                   context: context,
                   initialDate: dateTime,
-                  firstDate: new DateTime(2020),
-                  lastDate: new DateTime.now().add(new Duration(days: 365))
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime.now().add(Duration(days: 365))
               );
               if(picked != null) {
                 setState(() {
