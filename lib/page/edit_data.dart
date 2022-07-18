@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class EditData extends StatefulWidget {
   const EditData({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _EditDataState extends State<EditData> {
       body: Column(
         children: [
           ElevatedButton(
-            child: Text(dateTime.toString()),
+            child: Text(formatDate()),
             onPressed: () async {
               DateTime? picked = await showDatePicker(
                   context: context,
@@ -94,5 +95,11 @@ class _EditDataState extends State<EditData> {
         ],
       ),
     );
+  }
+
+  String formatDate() {
+    DateFormat format = DateFormat('yyyy年MM月dd日');
+    String dateText = format.format(dateTime);
+    return dateText;
   }
 }
