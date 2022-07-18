@@ -27,6 +27,7 @@ class _EditDataState extends State<EditData> {
             onPressed: () async {
               DateTime? picked = await showDatePicker(
                   context: context,
+                  locale: Locale("ja"),
                   initialDate: dateTime,
                   firstDate: DateTime(2020),
                   lastDate: DateTime.now().add(Duration(days: 365))
