@@ -9,6 +9,7 @@ class EditData extends StatefulWidget {
 
 class _EditDataState extends State<EditData> {
   TextEditingController titleEditingController = TextEditingController();
+  TextEditingController memoEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,20 @@ class _EditDataState extends State<EditData> {
               labelText: 'タイトル',
             ),
           ),
+          TextField(
+            controller: memoEditingController,
+            maxLines: null,
+            decoration: InputDecoration(
+              labelText: 'メモ',
+            ),
+          ),
           ElevatedButton(
             child: Text("保存"),
             onPressed: () {
+              print("タイトル");
               print(titleEditingController.text);
+              print("メモ");
+              print(memoEditingController.text);
             },
           ),
         ],
