@@ -13,6 +13,7 @@ class _EditDataState extends State<EditData> {
   TextEditingController titleEditingController = TextEditingController();
   TextEditingController memoEditingController = TextEditingController();
   double sliderValue = 0.0;
+  String selectedItem = "選択肢1";
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +81,32 @@ class _EditDataState extends State<EditData> {
             sliderValue.toInt().toString(),
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
+          DropdownButton(
+            //4
+            items: const [
+              //5
+              DropdownMenuItem(
+                child: Text('選択肢1'),
+                value: '選択肢1',
+              ),
+              DropdownMenuItem(
+                child: Text('選択肢2'),
+                value: '選択肢2',
+              ),
+              DropdownMenuItem(
+                child: Text('選択肢3'),
+                value: '選択肢3',
+              ),
+            ],
+            //6
+            onChanged: (String? value) {
+              setState(() {
+                selectedItem = value!;
+              });
+            },
+            //7
+            value: selectedItem,
+          ),
           ElevatedButton(
             child: Text("保存"),
             onPressed: () {
@@ -91,6 +118,8 @@ class _EditDataState extends State<EditData> {
               print(memoEditingController.text);
               print("数値");
               print(sliderValue);
+              print("ドロップダウンボタン");
+              print(selectedItem);
             },
           ),
         ],
