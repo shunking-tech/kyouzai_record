@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class EditData extends StatefulWidget {
@@ -14,6 +17,7 @@ class _EditDataState extends State<EditData> {
   TextEditingController memoEditingController = TextEditingController();
   double sliderValue = 0.0;
   String selectedItem = "選択肢1";
+  File? saveFile;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +111,23 @@ class _EditDataState extends State<EditData> {
             //7
             value: selectedItem,
           ),
+          ElevatedButton.icon(
+            icon: Icon(Icons.photo),
+            label: Text("写真を選択"),
+            onPressed: () async {
+              ImagePicker picker = ImagePicker();
+              XFile? image = await picker.pickImage(source: ImageSource.gallery);
+              if (image != null) {
+                saveFile = File(image.path);
+              }
+              setState(() {});
+            },
+          ),
+          if (saveFile != null)
+            SizedBox(
+              height: 100,
+              child: Image.file(saveFile!),
+            ),
           ElevatedButton(
             child: Text("保存"),
             onPressed: () {
