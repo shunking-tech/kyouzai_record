@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class EditData extends StatefulWidget {
   const EditData({Key? key}) : super(key: key);
@@ -18,6 +20,9 @@ class _EditDataState extends State<EditData> {
   double sliderValue = 0.0;
   String selectedItem = "選択肢1";
   File? saveFile;
+  XFile? image;
+  Uint8List? imageBytes;  // ImagePickerから選択した画像ファイルをこの形に変換する。端末内に保存する時に必要。
+  String? saveFilePath; // 画像ファイルを保存するための、端末内のパスを保持する
 
   @override
   Widget build(BuildContext context) {
@@ -116,9 +121,9 @@ class _EditDataState extends State<EditData> {
             label: Text("写真を選択"),
             onPressed: () async {
               ImagePicker picker = ImagePicker();
-              XFile? image = await picker.pickImage(source: ImageSource.gallery);
+              image = await picker.pickImage(source: ImageSource.gallery);
               if (image != null) {
-                saveFile = File(image.path);
+                saveFile = File(image!.path);
               }
               setState(() {});
             },
@@ -130,7 +135,7 @@ class _EditDataState extends State<EditData> {
             ),
           ElevatedButton(
             child: Text("保存"),
-            onPressed: () {
+            onPressed: () async {
               print("日時");
               print(dateTime);
               print("タイトル");
@@ -141,6 +146,17 @@ class _EditDataState extends State<EditData> {
               print(sliderValue);
               print("ドロップダウンボタン");
               print(selectedItem);
+
+              if (image != null) {
+                // 端末内の保存領域
+                Directory applicationDirectory = await getApplicationDocumentsDirectory();
+                saveFilePath = applicationDirectory.path + image!.name;  // 画像ファイルを保存するパス
+                imageBytes = await image!.readAsBytes(); // 端末内に保存するために画像ファイルを変換する
+                saveFile = File(saveFilePath!); // 保存先にファイルを作る
+                saveFile = await saveFile!.writeAsBytes(imageBytes!); // 選択した画像ファイルを書き込む
+              }
+              print("写真");
+              print(saveFile?.path);
             },
           ),
         ],
