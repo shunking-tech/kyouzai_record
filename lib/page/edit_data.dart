@@ -32,133 +32,16 @@ class _EditDataState extends State<EditData> {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-            child: Text(formatDate()),
-            onPressed: () async {
-              DateTime? picked = await showDatePicker(
-                  context: context,
-                  locale: Locale("ja"),
-                  initialDate: dateTime,
-                  firstDate: DateTime(2020),
-                  lastDate: DateTime.now().add(Duration(days: 365))
-              );
-              if(picked != null) {
-                setState(() {
-                  dateTime = picked;
-                });
-              }
-            },
-          ),
-          TextField(
-            controller: titleEditingController,
-            decoration: InputDecoration(
-              labelText: 'タイトル',
-            ),
-          ),
-          TextField(
-            controller: memoEditingController,
-            maxLines: null,
-            decoration: InputDecoration(
-              labelText: 'メモ',
-            ),
-          ),
+          datePickerButton(),
+          titleTextField(),
+          memoTextField(),
           SizedBox(
             height: 16.0,
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "数値",
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-          Slider(
-            label: sliderValue.toInt().toString(),
-            min: 0,
-            max: 100,
-            value: sliderValue,
-            activeColor: Colors.blue,
-            inactiveColor: Colors.grey,
-            divisions: 20,
-            onChanged: (value) {
-              setState(() {
-                sliderValue = value;
-              });
-            },
-          ),
-          Text(
-            sliderValue.toInt().toString(),
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          DropdownButton(
-            //4
-            items: const [
-              //5
-              DropdownMenuItem(
-                child: Text('選択肢1'),
-                value: '選択肢1',
-              ),
-              DropdownMenuItem(
-                child: Text('選択肢2'),
-                value: '選択肢2',
-              ),
-              DropdownMenuItem(
-                child: Text('選択肢3'),
-                value: '選択肢3',
-              ),
-            ],
-            //6
-            onChanged: (String? value) {
-              setState(() {
-                selectedItem = value!;
-              });
-            },
-            //7
-            value: selectedItem,
-          ),
-          ElevatedButton.icon(
-            icon: Icon(Icons.photo),
-            label: Text("写真を選択"),
-            onPressed: () async {
-              ImagePicker picker = ImagePicker();
-              image = await picker.pickImage(source: ImageSource.gallery);
-              if (image != null) {
-                saveFile = File(image!.path);
-              }
-              setState(() {});
-            },
-          ),
-          if (saveFile != null)
-            SizedBox(
-              height: 100,
-              child: Image.file(saveFile!),
-            ),
-          ElevatedButton(
-            child: Text("保存"),
-            onPressed: () async {
-              print("日時");
-              print(dateTime);
-              print("タイトル");
-              print(titleEditingController.text);
-              print("メモ");
-              print(memoEditingController.text);
-              print("数値");
-              print(sliderValue);
-              print("ドロップダウンボタン");
-              print(selectedItem);
-
-              if (image != null) {
-                // 端末内の保存領域
-                Directory applicationDirectory = await getApplicationDocumentsDirectory();
-                saveFilePath = applicationDirectory.path + image!.name;  // 画像ファイルを保存するパス
-                imageBytes = await image!.readAsBytes(); // 端末内に保存するために画像ファイルを変換する
-                saveFile = File(saveFilePath!); // 保存先にファイルを作る
-                saveFile = await saveFile!.writeAsBytes(imageBytes!); // 選択した画像ファイルを書き込む
-              }
-              print("写真");
-              print(saveFile?.path);
-            },
-          ),
+          slider(),
+          dropDownButton(),
+          imagePickerButton(),
+          saveButton(),
         ],
       ),
     );
@@ -168,5 +51,154 @@ class _EditDataState extends State<EditData> {
     DateFormat format = DateFormat('yyyy年MM月dd日');
     String dateText = format.format(dateTime);
     return dateText;
+  }
+
+  Widget datePickerButton() {
+    return ElevatedButton(
+      child: Text(formatDate()),
+      onPressed: () async {
+        DateTime? picked = await showDatePicker(
+            context: context,
+            locale: Locale("ja"),
+            initialDate: dateTime,
+            firstDate: DateTime(2020),
+            lastDate: DateTime.now().add(Duration(days: 365))
+        );
+        if(picked != null) {
+          setState(() {
+            dateTime = picked;
+          });
+        }
+      },
+    );
+  }
+
+  Widget titleTextField() {
+    return TextField(
+      controller: titleEditingController,
+      decoration: InputDecoration(
+        labelText: 'タイトル',
+      ),
+    );
+  }
+
+  Widget memoTextField() {
+    return TextField(
+      controller: memoEditingController,
+      maxLines: null,
+      decoration: InputDecoration(
+        labelText: 'メモ',
+      ),
+    );
+  }
+
+  Widget slider() {
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "数値",
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        Slider(
+          label: sliderValue.toInt().toString(),
+          min: 0,
+          max: 100,
+          value: sliderValue,
+          activeColor: Colors.blue,
+          inactiveColor: Colors.grey,
+          divisions: 20,
+          onChanged: (value) {
+            setState(() {
+              sliderValue = value;
+            });
+          },
+        ),
+        Text(
+          sliderValue.toInt().toString(),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
+  Widget dropDownButton() {
+    return DropdownButton(
+      items: const [
+        DropdownMenuItem(
+          child: Text('選択肢1'),
+          value: '選択肢1',
+        ),
+        DropdownMenuItem(
+          child: Text('選択肢2'),
+          value: '選択肢2',
+        ),
+        DropdownMenuItem(
+          child: Text('選択肢3'),
+          value: '選択肢3',
+        ),
+      ],
+      onChanged: (String? value) {
+        setState(() {
+          selectedItem = value!;
+        });
+      },
+      value: selectedItem,
+    );
+  }
+
+  Widget imagePickerButton() {
+    return Column(
+      children: [
+        ElevatedButton.icon(
+          icon: Icon(Icons.photo),
+          label: Text("写真を選択"),
+          onPressed: () async {
+            ImagePicker picker = ImagePicker();
+            image = await picker.pickImage(source: ImageSource.gallery);
+            if (image != null) {
+              saveFile = File(image!.path);
+            }
+            setState(() {});
+          },
+        ),
+        if (saveFile != null)
+          SizedBox(
+            height: 100,
+            child: Image.file(saveFile!),
+          ),
+      ],
+    );
+  }
+
+  Widget saveButton() {
+    return ElevatedButton(
+      child: Text("保存"),
+      onPressed: () async {
+        print("日時");
+        print(dateTime);
+        print("タイトル");
+        print(titleEditingController.text);
+        print("メモ");
+        print(memoEditingController.text);
+        print("数値");
+        print(sliderValue);
+        print("ドロップダウンボタン");
+        print(selectedItem);
+
+        if (image != null) {
+          // 端末内の保存領域
+          Directory applicationDirectory = await getApplicationDocumentsDirectory();
+          saveFilePath = applicationDirectory.path + image!.name;  // 画像ファイルを保存するパス
+          imageBytes = await image!.readAsBytes(); // 端末内に保存するために画像ファイルを変換する
+          saveFile = File(saveFilePath!); // 保存先にファイルを作る
+          saveFile = await saveFile!.writeAsBytes(imageBytes!); // 選択した画像ファイルを書き込む
+        }
+        print("写真");
+        print(saveFile?.path);
+      },
+    );
   }
 }
