@@ -173,7 +173,10 @@ class _EditDataState extends State<EditData> {
             label: Text("写真を選択"),
             onPressed: () async {
               ImagePicker picker = ImagePicker();
-              image = await picker.pickImage(source: ImageSource.gallery);
+              XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+              if (pickedFile != null) {
+                image = pickedFile;
+              }
               if (image != null) {
                 saveFile = File(image!.path);
               }
