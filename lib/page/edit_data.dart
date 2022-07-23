@@ -174,7 +174,7 @@ class _EditDataState extends State<EditData> {
             onPressed: () async {
               ImagePicker picker = ImagePicker();
               XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
-              if (pickedFile != null) {
+              if (pickedFile != null) { // 写真を選択した場合、選択した写真ファイルをimageに代入
                 image = pickedFile;
               }
               if (image != null) {
