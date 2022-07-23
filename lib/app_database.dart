@@ -1,3 +1,4 @@
+import 'package:kouzai_record/memo.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -31,6 +32,14 @@ class AppDatabase {
           ''',
         );
       },
+    );
+  }
+
+  Future<void> insertMemo(MemoModel memoModel) async {
+    final Database db = await database;
+    await db.insert(
+      "memo",
+      memoModel.toMap(),
     );
   }
 }

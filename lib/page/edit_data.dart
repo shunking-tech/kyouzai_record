@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:kouzai_record/app_database.dart';
+import 'package:kouzai_record/memo.dart';
 import 'package:path_provider/path_provider.dart';
 
 class EditData extends StatefulWidget {
@@ -221,6 +223,19 @@ class _EditDataState extends State<EditData> {
           }
           print("写真");
           print(saveFile?.path);
+
+          // 入力した値をmemoModelに持たせる
+          MemoModel memoModel = MemoModel(
+            date: dateTime,
+            title: titleEditingController.text,
+            memo: memoEditingController.text,
+            slider: sliderValue,
+            dropDownButton: selectedItem,
+            imagePath: saveFilePath,
+          );
+          await AppDatabase().insertMemo(memoModel);  // 入力した値をデータベースに追加する
+
+          Navigator.pop(context);
         },
       ),
     );
