@@ -30,19 +30,27 @@ class _EditDataState extends State<EditData> {
       appBar: AppBar(
         title: Text("編集画面"),
       ),
-      body: Column(
-        children: [
-          datePickerButton(),
-          titleTextField(),
-          memoTextField(),
-          SizedBox(
-            height: 16.0,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              datePickerButton(),
+              titleTextField(),
+              memoTextField(),
+              SizedBox(
+                height: 16.0,
+              ),
+              slider(),
+              dropDownButton(),
+              imagePickerButton(),
+              SizedBox(
+                height: 32.0,
+              ),
+              saveButton(),
+            ],
           ),
-          slider(),
-          dropDownButton(),
-          imagePickerButton(),
-          saveButton(),
-        ],
+        ),
       ),
     );
   }
@@ -54,22 +62,25 @@ class _EditDataState extends State<EditData> {
   }
 
   Widget datePickerButton() {
-    return ElevatedButton(
-      child: Text(formatDate()),
-      onPressed: () async {
-        DateTime? picked = await showDatePicker(
-            context: context,
-            locale: Locale("ja"),
-            initialDate: dateTime,
-            firstDate: DateTime(2020),
-            lastDate: DateTime.now().add(Duration(days: 365))
-        );
-        if(picked != null) {
-          setState(() {
-            dateTime = picked;
-          });
-        }
-      },
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        child: Text(formatDate()),
+        onPressed: () async {
+          DateTime? picked = await showDatePicker(
+              context: context,
+              locale: Locale("ja"),
+              initialDate: dateTime,
+              firstDate: DateTime(2020),
+              lastDate: DateTime.now().add(Duration(days: 365))
+          );
+          if(picked != null) {
+            setState(() {
+              dateTime = picked;
+            });
+          }
+        },
+      ),
     );
   }
 
@@ -125,48 +136,54 @@ class _EditDataState extends State<EditData> {
   }
 
   Widget dropDownButton() {
-    return DropdownButton(
-      items: const [
-        DropdownMenuItem(
-          child: Text('選択肢1'),
-          value: '選択肢1',
-        ),
-        DropdownMenuItem(
-          child: Text('選択肢2'),
-          value: '選択肢2',
-        ),
-        DropdownMenuItem(
-          child: Text('選択肢3'),
-          value: '選択肢3',
-        ),
-      ],
-      onChanged: (String? value) {
-        setState(() {
-          selectedItem = value!;
-        });
-      },
-      value: selectedItem,
+    return SizedBox(
+      width: double.infinity,
+      child: DropdownButton(
+        items: const [
+          DropdownMenuItem(
+            child: Text('選択肢1'),
+            value: '選択肢1',
+          ),
+          DropdownMenuItem(
+            child: Text('選択肢2'),
+            value: '選択肢2',
+          ),
+          DropdownMenuItem(
+            child: Text('選択肢3'),
+            value: '選択肢3',
+          ),
+        ],
+        onChanged: (String? value) {
+          setState(() {
+            selectedItem = value!;
+          });
+        },
+        value: selectedItem,
+      ),
     );
   }
 
   Widget imagePickerButton() {
     return Column(
       children: [
-        ElevatedButton.icon(
-          icon: Icon(Icons.photo),
-          label: Text("写真を選択"),
-          onPressed: () async {
-            ImagePicker picker = ImagePicker();
-            image = await picker.pickImage(source: ImageSource.gallery);
-            if (image != null) {
-              saveFile = File(image!.path);
-            }
-            setState(() {});
-          },
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            icon: Icon(Icons.photo),
+            label: Text("写真を選択"),
+            onPressed: () async {
+              ImagePicker picker = ImagePicker();
+              image = await picker.pickImage(source: ImageSource.gallery);
+              if (image != null) {
+                saveFile = File(image!.path);
+              }
+              setState(() {});
+            },
+          ),
         ),
         if (saveFile != null)
           SizedBox(
-            height: 100,
+            height: 200,
             child: Image.file(saveFile!),
           ),
       ],
@@ -174,31 +191,35 @@ class _EditDataState extends State<EditData> {
   }
 
   Widget saveButton() {
-    return ElevatedButton(
-      child: Text("保存"),
-      onPressed: () async {
-        print("日時");
-        print(dateTime);
-        print("タイトル");
-        print(titleEditingController.text);
-        print("メモ");
-        print(memoEditingController.text);
-        print("数値");
-        print(sliderValue);
-        print("ドロップダウンボタン");
-        print(selectedItem);
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(primary: Colors.indigo),
+        child: Text("保存"),
+        onPressed: () async {
+          print("日時");
+          print(dateTime);
+          print("タイトル");
+          print(titleEditingController.text);
+          print("メモ");
+          print(memoEditingController.text);
+          print("数値");
+          print(sliderValue);
+          print("ドロップダウンボタン");
+          print(selectedItem);
 
-        if (image != null) {
-          // 端末内の保存領域
-          Directory applicationDirectory = await getApplicationDocumentsDirectory();
-          saveFilePath = applicationDirectory.path + image!.name;  // 画像ファイルを保存するパス
-          imageBytes = await image!.readAsBytes(); // 端末内に保存するために画像ファイルを変換する
-          saveFile = File(saveFilePath!); // 保存先にファイルを作る
-          saveFile = await saveFile!.writeAsBytes(imageBytes!); // 選択した画像ファイルを書き込む
-        }
-        print("写真");
-        print(saveFile?.path);
-      },
+          if (image != null) {
+            // 端末内の保存領域
+            Directory applicationDirectory = await getApplicationDocumentsDirectory();
+            saveFilePath = applicationDirectory.path + image!.name;  // 画像ファイルを保存するパス
+            imageBytes = await image!.readAsBytes(); // 端末内に保存するために画像ファイルを変換する
+            saveFile = File(saveFilePath!); // 保存先にファイルを作る
+            saveFile = await saveFile!.writeAsBytes(imageBytes!); // 選択した画像ファイルを書き込む
+          }
+          print("写真");
+          print(saveFile?.path);
+        },
+      ),
     );
   }
 }
