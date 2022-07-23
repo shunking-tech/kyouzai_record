@@ -42,10 +42,11 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.edit),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(
+        onPressed: () async {
+          await Navigator.push(context, MaterialPageRoute(
               builder: (context) => EditData()
           ));
+          setState(() {});
         },
       ),
     );
