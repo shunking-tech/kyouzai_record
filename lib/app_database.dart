@@ -45,7 +45,7 @@ class AppDatabase {
 
   Future<List<MemoModel>> getMemos() async {
     final Database db = await database;
-    final List<Map<String, dynamic>> memoMapList = await db.query('memo');
+    final List<Map<String, dynamic>> memoMapList = await db.query('memo', orderBy: "date DESC");
     return List.generate(memoMapList.length, (i) {
       return MemoModel(
         id: memoMapList[i]['id'],
