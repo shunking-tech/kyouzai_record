@@ -24,7 +24,10 @@ class _HomeState extends State<Home> {
             return Center(child: CircularProgressIndicator());
           } else {
             List<MemoModel> memoModelList = snapshot.data as List<MemoModel>;
-            return ListView.builder(
+            return ListView.separated(
+              separatorBuilder: (context, index) {
+                return Divider(color: Colors.black, height: 1,);
+              },
               itemCount: memoModelList.length,
               itemBuilder: (context, index) {
                 MemoModel memoModelItem = memoModelList[index];
