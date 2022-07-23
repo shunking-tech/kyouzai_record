@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kouzai_record/app_database.dart';
+import 'package:kouzai_record/memo.dart';
 import 'package:kouzai_record/page/edit_data.dart';
 
 class Home extends StatefulWidget {
@@ -15,8 +17,25 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text("title"),
       ),
-      body: Center(
-        child: Text("text"),
+      body: FutureBuilder(
+        future: AppDatabase().getMemos(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            List<MemoModel> memoModelList = snapshot.data as List<MemoModel>;
+            return ListView.builder(
+              itemCount: memoModelList.length,
+              itemBuilder: (context, index) {
+                MemoModel memoModelItem = memoModelList[index];
+                return ListTile(
+                  title: Text(memoModelItem.title!),
+                  subtitle: Text(memoModelItem.date.toString()),
+                );
+              },
+            );
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.edit),

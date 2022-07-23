@@ -42,4 +42,20 @@ class AppDatabase {
       memoModel.toMap(),
     );
   }
+
+  Future<List<MemoModel>> getMemos() async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> memoMapList = await db.query('memo');
+    return List.generate(memoMapList.length, (i) {
+      return MemoModel(
+        id: memoMapList[i]['id'],
+        date: DateTime.parse(memoMapList[i]['date']),
+        title: memoMapList[i]['title'],
+        memo: memoMapList[i]['memo'],
+        slider: memoMapList[i]['slider'],
+        dropDownButton: memoMapList[i]['drop_down_button'],
+        imagePath: memoMapList[i]['image_path'],
+      );
+    });
+  }
 }
