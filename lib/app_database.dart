@@ -68,4 +68,13 @@ class AppDatabase {
       whereArgs: [memoModel.id],
     );
   }
+
+  Future<void> deleteMemo(int id) async {
+    final Database db = await database;
+    await db.delete(
+      "memo",
+      where: "id = ?",
+      whereArgs: [id],
+    );
+  }
 }

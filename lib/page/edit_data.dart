@@ -68,8 +68,9 @@ class _EditDataState extends State<EditData> {
                         ),
                         TextButton(
                           child: Text("削除する", style: TextStyle(color: Colors.red),),
-                          onPressed: () {
-                            Navigator.pop(context);
+                          onPressed: () async {
+                            await AppDatabase().deleteMemo(widget.memoModel!.id!);
+                            Navigator.popUntil(context, (route) => route.isFirst);
                           },
                         ),
                       ],
