@@ -31,6 +31,7 @@ class _EditDataState extends State<EditData> {
   void initState() {
     super.initState();
     if (widget.memoModel != null) {
+      print("更新");
       dateTime = DateTime.parse(widget.memoModel!.date.toString());
       titleEditingController.text = widget.memoModel!.title!;
       memoEditingController.text = widget.memoModel!.memo!;
@@ -243,6 +244,7 @@ class _EditDataState extends State<EditData> {
 
           // 入力した値をmemoModelに持たせる
           MemoModel memoModel = MemoModel(
+            id: widget.memoModel?.id,
             date: dateTime,
             title: titleEditingController.text,
             memo: memoEditingController.text,
@@ -250,7 +252,11 @@ class _EditDataState extends State<EditData> {
             dropDownButton: selectedItem,
             imagePath: saveFilePath,
           );
-          await AppDatabase().insertMemo(memoModel);  // 入力した値をデータベースに追加する
+          if (widget.memoModel != null) { // 追加ボタンから編集画面を開いた時は、新規データを追加する
+            await AppDatabase().updateMemo(memoModel);  // データを更新する
+          } else {  // データ一覧から選択して編集画面を開いた時は、既存のデータを更新する
+            await AppDatabase().insertMemo(memoModel);  // 入力した値をデータベースに追加する
+          }
 
           Navigator.pop(context);
         },

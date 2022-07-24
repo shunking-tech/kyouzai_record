@@ -34,10 +34,11 @@ class _HomeState extends State<Home> {
                 return ListTile(
                   title: Text(memoModelItem.title!),
                   subtitle: Text(memoModelItem.date.toString()),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                  onTap: () async {
+                    await Navigator.push(context, MaterialPageRoute(
                         builder: (context) => EditData(memoModel: memoModelItem,)
                     ));
+                    setState(() {});
                   },
                 );
               },

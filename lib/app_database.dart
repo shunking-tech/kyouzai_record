@@ -58,4 +58,14 @@ class AppDatabase {
       );
     });
   }
+
+  Future<void> updateMemo(MemoModel memoModel) async {
+    final Database db = await database;
+    await db.update(
+      "memo",
+      memoModel.toMap(),
+      where: "id = ?",
+      whereArgs: [memoModel.id],
+    );
+  }
 }
