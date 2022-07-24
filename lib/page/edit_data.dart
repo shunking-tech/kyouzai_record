@@ -49,6 +49,36 @@ class _EditDataState extends State<EditData> {
     return Scaffold(
       appBar: AppBar(
         title: Text("編集画面"),
+        actions: [
+          if (widget.memoModel != null)
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      title: Text("このメモを削除しますか？"),
+                      actions: [
+                        TextButton(
+                          child: Text("キャンセル", style: TextStyle(color: Colors.grey),),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        TextButton(
+                          child: Text("削除する", style: TextStyle(color: Colors.red),),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
