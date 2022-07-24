@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kouzai_record/app_database.dart';
+import 'package:kouzai_record/logic/datetime_logic.dart';
 import 'package:kouzai_record/memo.dart';
 import 'package:kouzai_record/page/edit_data.dart';
 
@@ -33,7 +34,7 @@ class _HomeState extends State<Home> {
                 MemoModel memoModelItem = memoModelList[index];
                 return ListTile(
                   title: Text(memoModelItem.title!),
-                  subtitle: Text(memoModelItem.date.toString()),
+                  subtitle: Text(DatetimeLogic.formatDate(memoModelItem.date!)),
                   onTap: () async {
                     await Navigator.push(context, MaterialPageRoute(
                         builder: (context) => EditData(memoModel: memoModelItem,)

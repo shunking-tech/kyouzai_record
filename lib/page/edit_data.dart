@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kouzai_record/app_database.dart';
+import 'package:kouzai_record/logic/datetime_logic.dart';
 import 'package:kouzai_record/memo.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -106,17 +107,11 @@ class _EditDataState extends State<EditData> {
     );
   }
 
-  String formatDate() {
-    DateFormat format = DateFormat('yyyy年MM月dd日');
-    String dateText = format.format(dateTime);
-    return dateText;
-  }
-
   Widget datePickerButton() {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        child: Text(formatDate()),
+        child: Text(DatetimeLogic.formatDate(dateTime)),
         onPressed: () async {
           DateTime? picked = await showDatePicker(
               context: context,
