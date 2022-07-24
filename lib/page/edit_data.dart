@@ -9,7 +9,8 @@ import 'package:kouzai_record/memo.dart';
 import 'package:path_provider/path_provider.dart';
 
 class EditData extends StatefulWidget {
-  const EditData({Key? key}) : super(key: key);
+  final MemoModel? memoModel;
+  const EditData({Key? key, this.memoModel}) : super(key: key);
 
   @override
   State<EditData> createState() => _EditDataState();
@@ -25,6 +26,22 @@ class _EditDataState extends State<EditData> {
   XFile? image;
   Uint8List? imageBytes;  // ImagePickerから選択した画像ファイルをこの形に変換する。端末内に保存する時に必要。
   String? saveFilePath; // 画像ファイルを保存するための、端末内のパスを保持する
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.memoModel != null) {
+      dateTime = DateTime.parse(widget.memoModel!.date.toString());
+      titleEditingController.text = widget.memoModel!.title!;
+      memoEditingController.text = widget.memoModel!.memo!;
+      sliderValue = widget.memoModel!.slider!;
+      selectedItem = widget.memoModel!.dropDownButton!;
+      saveFilePath = widget.memoModel!.imagePath;
+      if (saveFilePath != null) {
+        saveFile = File(saveFilePath!);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
