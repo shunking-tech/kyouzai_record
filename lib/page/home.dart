@@ -12,15 +12,29 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextEditingController searchText = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          controller: searchText,
+          textInputAction: TextInputAction.search,
+          onSubmitted: (text) {
+            setState(() {});
+          },
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.blue.shade200,
             prefixIcon: Icon(Icons.search, color: Colors.grey,),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                searchText.text = "";
+                setState(() {});
+              },
+            ),
             hintText: "検索",
             border: UnderlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -30,7 +44,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: FutureBuilder(
-        future: AppDatabase().getMemos(),
+        future: AppDatabase().getMemos(searchText.text),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
