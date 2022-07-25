@@ -16,7 +16,18 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("title"),
+        title: TextField(
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.blue.shade200,
+            prefixIcon: Icon(Icons.search, color: Colors.grey,),
+            hintText: "検索",
+            border: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
       ),
       body: FutureBuilder(
         future: AppDatabase().getMemos(),
