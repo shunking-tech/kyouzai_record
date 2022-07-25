@@ -43,9 +43,19 @@ class AppDatabase {
     );
   }
 
-  Future<List<MemoModel>> getMemos() async {
+  Future<List<MemoModel>> getMemos(String keyword) async {
     final Database db = await database;
-    final List<Map<String, dynamic>> memoMapList = await db.query('memo', orderBy: "date DESC");
+    List<Map<String, dynamic>> memoMapList;
+    if (keyword.isEmpty) {
+      memoMapList = await db.query('memo', orderBy: "date DESC");
+    } else {
+      memoMapList = await db.query(
+        'memo',
+        orderBy: "date DESC",
+        where: "title LIKE ? OR memo LIKE ?",
+        whereArgs: ["%$keyword%", "%$keyword%"]
+      );
+    }
     return List.generate(memoMapList.length, (i) {
       return MemoModel(
         id: memoMapList[i]['id'],
