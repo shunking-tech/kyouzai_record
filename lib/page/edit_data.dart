@@ -47,60 +47,63 @@ class _EditDataState extends State<EditData> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("編集画面"),
-        actions: [
-          if (widget.memoModel != null)
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    return AlertDialog(
-                      title: Text("このメモを削除しますか？"),
-                      actions: [
-                        TextButton(
-                          child: Text("キャンセル", style: TextStyle(color: Colors.grey),),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        TextButton(
-                          child: Text("削除する", style: TextStyle(color: Colors.red),),
-                          onPressed: () async {
-                            await AppDatabase().deleteMemo(widget.memoModel!.id!);
-                            Navigator.popUntil(context, (route) => route.isFirst);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              datePickerButton(),
-              titleTextField(),
-              memoTextField(),
-              SizedBox(
-                height: 16.0,
-              ),
-              slider(),
-              dropDownButton(),
-              imagePickerButton(),
-              SizedBox(
-                height: 32.0,
-              ),
-              saveButton(),
-            ],
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("編集画面"),
+          actions: [
+            if (widget.memoModel != null)
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        title: Text("このメモを削除しますか？"),
+                        actions: [
+                          TextButton(
+                            child: Text("キャンセル", style: TextStyle(color: Colors.grey),),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          TextButton(
+                            child: Text("削除する", style: TextStyle(color: Colors.red),),
+                            onPressed: () async {
+                              await AppDatabase().deleteMemo(widget.memoModel!.id!);
+                              Navigator.popUntil(context, (route) => route.isFirst);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              )
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                datePickerButton(),
+                titleTextField(),
+                memoTextField(),
+                SizedBox(
+                  height: 16.0,
+                ),
+                slider(),
+                dropDownButton(),
+                imagePickerButton(),
+                SizedBox(
+                  height: 32.0,
+                ),
+                saveButton(),
+              ],
+            ),
           ),
         ),
       ),
