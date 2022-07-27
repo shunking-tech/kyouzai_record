@@ -14,13 +14,13 @@ class MemoModel {
 
   Map<String, dynamic> toMap() {
     return {
-      "id": id,
-      "date": date.toString(),
-      "title": title,
-      "memo": memo,
-      "slider": slider,
-      "drop_down_button": dropDownButton,
-      "image_path": imagePath,
+      memoId: id,
+      memoDate: date.toString(),
+      memoTitle: title,
+      memoMemo: memo,
+      memoSlider: slider,
+      memoDropDownButton: dropDownButton,
+      memoImagePath: imagePath,
     };
   }
 }

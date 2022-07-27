@@ -2,6 +2,15 @@ import 'package:kouzai_record/memo.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+const String memoTableName = "memo";
+const String memoId = "id";
+const String memoDate = "date";
+const String memoTitle = "title";
+const String memoMemo = "memo";
+const String memoSlider = "slider";
+const String memoDropDownButton = "drop_down_button";
+const String memoImagePath = "image_path";
+
 class AppDatabase {
   // データベースのコントローラーを取得する
   Future<Database> get database async {
@@ -20,14 +29,14 @@ class AppDatabase {
         // メモ情報を保存するためのテーブル(表)を作成
         return db.execute(
           '''
-          CREATE TABLE memo(
-            id INTEGER PRIMARY KEY,
-            date TEXT,
-            title TEXT,
-            memo TEXT,
-            slider REAL,
-            drop_down_button TEXT,
-            image_path TEXT
+          CREATE TABLE $memoTableName(
+            $memoId INTEGER PRIMARY KEY,
+            $memoDate TEXT,
+            $memoTitle TEXT,
+            $memoMemo TEXT,
+            $memoSlider REAL,
+            $memoDropDownButton TEXT,
+            $memoImagePath TEXT
           )
           ''',
         );
@@ -38,7 +47,7 @@ class AppDatabase {
   Future<void> insertMemo(MemoModel memoModel) async {
     final Database db = await database;
     await db.insert(
-      "memo",
+      memoTableName,
       memoModel.toMap(),
     );
   }
@@ -47,24 +56,24 @@ class AppDatabase {
     final Database db = await database;
     List<Map<String, dynamic>> memoMapList;
     if (keyword.isEmpty) {
-      memoMapList = await db.query('memo', orderBy: "date DESC");
+      memoMapList = await db.query(memoTableName, orderBy: "$memoDate DESC");
     } else {
       memoMapList = await db.query(
-        'memo',
-        orderBy: "date DESC",
-        where: "title LIKE ? OR memo LIKE ?",
+        memoTableName,
+        orderBy: "$memoId DESC",
+        where: "$memoTitle LIKE ? OR $memoMemo LIKE ?",
         whereArgs: ["%$keyword%", "%$keyword%"]
       );
     }
     return List.generate(memoMapList.length, (i) {
       return MemoModel(
-        id: memoMapList[i]['id'],
-        date: DateTime.parse(memoMapList[i]['date']),
-        title: memoMapList[i]['title'],
-        memo: memoMapList[i]['memo'],
-        slider: memoMapList[i]['slider'],
-        dropDownButton: memoMapList[i]['drop_down_button'],
-        imagePath: memoMapList[i]['image_path'],
+        id: memoMapList[i][memoId],
+        date: DateTime.parse(memoMapList[i][memoDate]),
+        title: memoMapList[i][memoTitle],
+        memo: memoMapList[i][memoMemo],
+        slider: memoMapList[i][memoSlider],
+        dropDownButton: memoMapList[i][memoDropDownButton],
+        imagePath: memoMapList[i][memoImagePath],
       );
     });
   }
@@ -72,9 +81,9 @@ class AppDatabase {
   Future<void> updateMemo(MemoModel memoModel) async {
     final Database db = await database;
     await db.update(
-      "memo",
+      memoTableName,
       memoModel.toMap(),
-      where: "id = ?",
+      where: "$memoId = ?",
       whereArgs: [memoModel.id],
     );
   }
@@ -82,8 +91,8 @@ class AppDatabase {
   Future<void> deleteMemo(int id) async {
     final Database db = await database;
     await db.delete(
-      "memo",
-      where: "id = ?",
+      memoTableName,
+      where: "$memoId = ?",
       whereArgs: [id],
     );
   }
