@@ -1,6 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+// テーブル名とカラム名は変数に入れておく方がいい
 class AppDatabase {
   // データベースのコントローラーを取得する
   Future<Database> get database async {
