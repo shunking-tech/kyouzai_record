@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 const String memoTableName = "memo";
 const String memoId = "id";
 const String memoDate = "date";
-const String memoTitle = "title";
+const String memoOpponentName = "opponentName";
 const String memoMemo = "memo";
 const String memoSlider = "slider";
 const String memoDropDownButton = "drop_down_button";
@@ -26,13 +26,14 @@ class AppDatabase {
       path, // データベースの保存場所
       version: 1, // テーブル(表)の構造を変更する度に書き換えて+1増やす
       onCreate: (db, version) {
+        print("データベース作成");
         // メモ情報を保存するためのテーブル(表)を作成
         return db.execute(
           '''
           CREATE TABLE $memoTableName(
             $memoId INTEGER PRIMARY KEY,
             $memoDate TEXT,
-            $memoTitle TEXT,
+            $memoOpponentName TEXT,
             $memoMemo TEXT,
             $memoSlider REAL,
             $memoDropDownButton TEXT,
@@ -61,7 +62,7 @@ class AppDatabase {
       memoMapList = await db.query(
         memoTableName,
         orderBy: "$memoId DESC",
-        where: "$memoTitle LIKE ? OR $memoMemo LIKE ?",
+        where: "$memoOpponentName LIKE ? OR $memoMemo LIKE ?",
         whereArgs: ["%$keyword%", "%$keyword%"]
       );
     }
@@ -69,7 +70,7 @@ class AppDatabase {
       return MemoModel(
         id: memoMapList[i][memoId],
         date: DateTime.parse(memoMapList[i][memoDate]),
-        title: memoMapList[i][memoTitle],
+        opponentName: memoMapList[i][memoOpponentName],
         memo: memoMapList[i][memoMemo],
         slider: memoMapList[i][memoSlider],
         dropDownButton: memoMapList[i][memoDropDownButton],

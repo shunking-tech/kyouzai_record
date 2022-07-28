@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
               itemBuilder: (context, index) {
                 MemoModel memoModelItem = memoModelList[index];
                 return ListTile(
-                  title: Text(memoModelItem.title!),
+                  title: Text(memoModelItem.opponentName!),
                   subtitle: Text(DatetimeLogic.formatDate(memoModelItem.date!)),
                   onTap: () async {
                     await Navigator.push(context, MaterialPageRoute(
