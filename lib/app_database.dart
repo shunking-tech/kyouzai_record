@@ -7,7 +7,6 @@ const String memoId = "id";
 const String memoDate = "date";
 const String memoName = "name";
 const String memoMemo = "memo";
-const String memoSlider = "slider";
 const String memoCategory = "category";
 const String memoImagePath = "image_path";
 
@@ -35,7 +34,6 @@ class AppDatabase {
             $memoDate TEXT,
             $memoName TEXT,
             $memoMemo TEXT,
-            $memoSlider REAL,
             $memoCategory TEXT,
             $memoImagePath TEXT
           )
@@ -72,7 +70,6 @@ class AppDatabase {
         date: DateTime.parse(memoMapList[i][memoDate]),
         name: memoMapList[i][memoName],
         memo: memoMapList[i][memoMemo],
-        slider: memoMapList[i][memoSlider],
         category: memoMapList[i][memoCategory],
         imagePath: memoMapList[i][memoImagePath],
       );

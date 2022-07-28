@@ -21,7 +21,6 @@ class _EditDataState extends State<EditData> {
   DateTime dateTime = DateTime.now();
   TextEditingController nameController = TextEditingController();
   TextEditingController memoEditingController = TextEditingController();
-  double sliderValue = 0.0;
   String selectedCategory = "";
   File? saveFile;
   XFile? image;
@@ -36,7 +35,6 @@ class _EditDataState extends State<EditData> {
       dateTime = DateTime.parse(widget.memoModel!.date.toString());
       nameController.text = widget.memoModel!.name!;
       memoEditingController.text = widget.memoModel!.memo!;
-      sliderValue = widget.memoModel!.slider!;
       selectedCategory = widget.memoModel!.category!;
       saveFilePath = widget.memoModel!.imagePath;
       if (saveFilePath != null) {
@@ -95,7 +93,6 @@ class _EditDataState extends State<EditData> {
                 SizedBox(
                   height: 16.0,
                 ),
-                slider(),
                 categoryDownButton(),
                 imagePickerButton(),
                 SizedBox(
@@ -149,38 +146,6 @@ class _EditDataState extends State<EditData> {
       decoration: InputDecoration(
         labelText: 'メモ',
       ),
-    );
-  }
-
-  Widget slider() {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "数値",
-            style: TextStyle(fontSize: 16),
-          ),
-        ),
-        Slider(
-          label: sliderValue.toInt().toString(),
-          min: 0,
-          max: 100,
-          value: sliderValue,
-          activeColor: Colors.blue,
-          inactiveColor: Colors.grey,
-          divisions: 20,
-          onChanged: (value) {
-            setState(() {
-              sliderValue = value;
-            });
-          },
-        ),
-        Text(
-          sliderValue.toInt().toString(),
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-      ],
     );
   }
 
@@ -259,8 +224,6 @@ class _EditDataState extends State<EditData> {
           print(nameController.text);
           print("メモ");
           print(memoEditingController.text);
-          print("数値");
-          print(sliderValue);
           print("ドロップダウンボタン");
           print(selectedCategory);
 
@@ -281,7 +244,6 @@ class _EditDataState extends State<EditData> {
             date: dateTime,
             name: nameController.text,
             memo: memoEditingController.text,
-            slider: sliderValue,
             category: selectedCategory,
             imagePath: saveFilePath,
           );
