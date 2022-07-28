@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 const String memoTableName = "memo";
 const String memoId = "id";
 const String memoDate = "date";
-const String memoOpponentName = "opponentName";
+const String memoName = "name";
 const String memoMemo = "memo";
 const String memoSlider = "slider";
 const String memoDropDownButton = "drop_down_button";
@@ -33,7 +33,7 @@ class AppDatabase {
           CREATE TABLE $memoTableName(
             $memoId INTEGER PRIMARY KEY,
             $memoDate TEXT,
-            $memoOpponentName TEXT,
+            $memoName TEXT,
             $memoMemo TEXT,
             $memoSlider REAL,
             $memoDropDownButton TEXT,
@@ -62,7 +62,7 @@ class AppDatabase {
       memoMapList = await db.query(
         memoTableName,
         orderBy: "$memoId DESC",
-        where: "$memoOpponentName LIKE ? OR $memoMemo LIKE ?",
+        where: "$memoName LIKE ? OR $memoMemo LIKE ?",
         whereArgs: ["%$keyword%", "%$keyword%"]
       );
     }
@@ -70,7 +70,7 @@ class AppDatabase {
       return MemoModel(
         id: memoMapList[i][memoId],
         date: DateTime.parse(memoMapList[i][memoDate]),
-        opponentName: memoMapList[i][memoOpponentName],
+        name: memoMapList[i][memoName],
         memo: memoMapList[i][memoMemo],
         slider: memoMapList[i][memoSlider],
         dropDownButton: memoMapList[i][memoDropDownButton],

@@ -19,7 +19,7 @@ class EditData extends StatefulWidget {
 
 class _EditDataState extends State<EditData> {
   DateTime dateTime = DateTime.now();
-  TextEditingController opponentNameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController memoEditingController = TextEditingController();
   double sliderValue = 0.0;
   String selectedItem = "選択肢1";
@@ -34,7 +34,7 @@ class _EditDataState extends State<EditData> {
     if (widget.memoModel != null) {
       print("更新");
       dateTime = DateTime.parse(widget.memoModel!.date.toString());
-      opponentNameController.text = widget.memoModel!.opponentName!;
+      nameController.text = widget.memoModel!.name!;
       memoEditingController.text = widget.memoModel!.memo!;
       sliderValue = widget.memoModel!.slider!;
       selectedItem = widget.memoModel!.dropDownButton!;
@@ -90,7 +90,7 @@ class _EditDataState extends State<EditData> {
             child: Column(
               children: [
                 datePickerButton(),
-                opponentNameTextField(),
+                nameTextField(),
                 memoTextField(),
                 SizedBox(
                   height: 16.0,
@@ -133,11 +133,11 @@ class _EditDataState extends State<EditData> {
     );
   }
 
-  Widget opponentNameTextField() {
+  Widget nameTextField() {
     return TextField(
-      controller: opponentNameController,
+      controller: nameController,
       decoration: InputDecoration(
-        labelText: '対戦相手名',
+        labelText: '名前',
       ),
     );
   }
@@ -252,7 +252,7 @@ class _EditDataState extends State<EditData> {
           print("日時");
           print(dateTime);
           print("タイトル");
-          print(opponentNameController.text);
+          print(nameController.text);
           print("メモ");
           print(memoEditingController.text);
           print("数値");
@@ -275,7 +275,7 @@ class _EditDataState extends State<EditData> {
           MemoModel memoModel = MemoModel(
             id: widget.memoModel?.id,
             date: dateTime,
-            opponentName: opponentNameController.text,
+            name: nameController.text,
             memo: memoEditingController.text,
             slider: sliderValue,
             dropDownButton: selectedItem,
