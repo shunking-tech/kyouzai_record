@@ -22,7 +22,7 @@ class _EditDataState extends State<EditData> {
   TextEditingController nameController = TextEditingController();
   TextEditingController memoEditingController = TextEditingController();
   double sliderValue = 0.0;
-  String selectedItem = "選択肢1";
+  String selectedCategory = "";
   File? saveFile;
   XFile? image;
   Uint8List? imageBytes;  // ImagePickerから選択した画像ファイルをこの形に変換する。端末内に保存する時に必要。
@@ -37,7 +37,7 @@ class _EditDataState extends State<EditData> {
       nameController.text = widget.memoModel!.name!;
       memoEditingController.text = widget.memoModel!.memo!;
       sliderValue = widget.memoModel!.slider!;
-      selectedItem = widget.memoModel!.dropDownButton!;
+      selectedCategory = widget.memoModel!.category!;
       saveFilePath = widget.memoModel!.imagePath;
       if (saveFilePath != null) {
         saveFile = File(saveFilePath!);
@@ -96,7 +96,7 @@ class _EditDataState extends State<EditData> {
                   height: 16.0,
                 ),
                 slider(),
-                dropDownButton(),
+                categoryDownButton(),
                 imagePickerButton(),
                 SizedBox(
                   height: 32.0,
@@ -184,30 +184,34 @@ class _EditDataState extends State<EditData> {
     );
   }
 
-  Widget dropDownButton() {
+  Widget categoryDownButton() {
     return SizedBox(
       width: double.infinity,
       child: DropdownButton(
         items: const [
           DropdownMenuItem(
-            child: Text('選択肢1'),
-            value: '選択肢1',
+            child: Text('-カテゴリを選択-'),
+            value: '',
           ),
           DropdownMenuItem(
-            child: Text('選択肢2'),
-            value: '選択肢2',
+            child: Text('仕事'),
+            value: '仕事',
           ),
           DropdownMenuItem(
-            child: Text('選択肢3'),
-            value: '選択肢3',
+            child: Text('趣味'),
+            value: '趣味',
+          ),
+          DropdownMenuItem(
+            child: Text('その他'),
+            value: 'その他',
           ),
         ],
         onChanged: (String? value) {
           setState(() {
-            selectedItem = value!;
+            selectedCategory = value!;
           });
         },
-        value: selectedItem,
+        value: selectedCategory,
       ),
     );
   }
@@ -258,7 +262,7 @@ class _EditDataState extends State<EditData> {
           print("数値");
           print(sliderValue);
           print("ドロップダウンボタン");
-          print(selectedItem);
+          print(selectedCategory);
 
           if (image != null) {
             // 端末内の保存領域
@@ -278,7 +282,7 @@ class _EditDataState extends State<EditData> {
             name: nameController.text,
             memo: memoEditingController.text,
             slider: sliderValue,
-            dropDownButton: selectedItem,
+            category: selectedCategory,
             imagePath: saveFilePath,
           );
           if (widget.memoModel != null) { // 追加ボタンから編集画面を開いた時は、新規データを追加する

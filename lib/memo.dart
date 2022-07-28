@@ -7,10 +7,10 @@ class MemoModel {
   final String? name;
   final String? memo;
   final double? slider;
-  final String? dropDownButton;
+  final String? category;
   final String? imagePath;
 
-  MemoModel({this.id, this.date, this.name, this.memo, this.slider, this.dropDownButton, this.imagePath});
+  MemoModel({this.id, this.date, this.name, this.memo, this.slider, this.category, this.imagePath});
 
   Map<String, dynamic> toMap() {
     return {
@@ -19,7 +19,7 @@ class MemoModel {
       memoName: name,
       memoMemo: memo,
       memoSlider: slider,
-      memoDropDownButton: dropDownButton,
+      memoCategory: category,
       memoImagePath: imagePath,
     };
   }

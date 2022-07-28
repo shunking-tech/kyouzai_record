@@ -8,7 +8,7 @@ const String memoDate = "date";
 const String memoName = "name";
 const String memoMemo = "memo";
 const String memoSlider = "slider";
-const String memoDropDownButton = "drop_down_button";
+const String memoCategory = "category";
 const String memoImagePath = "image_path";
 
 class AppDatabase {
@@ -36,7 +36,7 @@ class AppDatabase {
             $memoName TEXT,
             $memoMemo TEXT,
             $memoSlider REAL,
-            $memoDropDownButton TEXT,
+            $memoCategory TEXT,
             $memoImagePath TEXT
           )
           ''',
@@ -73,7 +73,7 @@ class AppDatabase {
         name: memoMapList[i][memoName],
         memo: memoMapList[i][memoMemo],
         slider: memoMapList[i][memoSlider],
-        dropDownButton: memoMapList[i][memoDropDownButton],
+        category: memoMapList[i][memoCategory],
         imagePath: memoMapList[i][memoImagePath],
       );
     });
