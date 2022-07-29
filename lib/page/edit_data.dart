@@ -20,6 +20,7 @@ class EditData extends StatefulWidget {
 class _EditDataState extends State<EditData> {
   DateTime dateTime = DateTime.now();
   TextEditingController nameController = TextEditingController();
+  TextEditingController affiliationController = TextEditingController();
   TextEditingController memoEditingController = TextEditingController();
   String selectedCategory = "";
   File? saveFile;
@@ -34,6 +35,7 @@ class _EditDataState extends State<EditData> {
       print("更新");
       dateTime = DateTime.parse(widget.memoModel!.date.toString());
       nameController.text = widget.memoModel!.name!;
+      affiliationController.text = widget.memoModel!.affiliation!;
       memoEditingController.text = widget.memoModel!.memo!;
       selectedCategory = widget.memoModel!.category!;
       saveFilePath = widget.memoModel!.imagePath;
@@ -89,6 +91,7 @@ class _EditDataState extends State<EditData> {
               children: [
                 datePickerButton(),
                 nameTextField(),
+                affiliationTextField(),
                 memoTextField(),
                 SizedBox(
                   height: 16.0,
@@ -135,6 +138,15 @@ class _EditDataState extends State<EditData> {
       controller: nameController,
       decoration: InputDecoration(
         labelText: '名前',
+      ),
+    );
+  }
+
+  Widget affiliationTextField() {
+    return TextField(
+      controller: affiliationController,
+      decoration: InputDecoration(
+        labelText: '所属',
       ),
     );
   }
@@ -243,6 +255,7 @@ class _EditDataState extends State<EditData> {
             id: widget.memoModel?.id,
             date: dateTime,
             name: nameController.text,
+            affiliation: affiliationController.text,
             memo: memoEditingController.text,
             category: selectedCategory,
             imagePath: saveFilePath,

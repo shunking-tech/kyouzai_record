@@ -6,6 +6,7 @@ const String memoTableName = "memo";
 const String memoId = "id";
 const String memoDate = "date";
 const String memoName = "name";
+const String memoAffiliation = "affiliation";
 const String memoMemo = "memo";
 const String memoCategory = "category";
 const String memoImagePath = "image_path";
@@ -33,6 +34,7 @@ class AppDatabase {
             $memoId INTEGER PRIMARY KEY,
             $memoDate TEXT,
             $memoName TEXT,
+            $memoAffiliation TEXT,
             $memoMemo TEXT,
             $memoCategory TEXT,
             $memoImagePath TEXT
@@ -60,8 +62,8 @@ class AppDatabase {
       memoMapList = await db.query(
         memoTableName,
         orderBy: "$memoId DESC",
-        where: "$memoName LIKE ? OR $memoMemo LIKE ?",
-        whereArgs: ["%$keyword%", "%$keyword%"]
+        where: "$memoName LIKE ? OR $memoMemo LIKE ? OR $memoAffiliation LIKE ?",
+        whereArgs: ["%$keyword%", "%$keyword%", "%$keyword%"]
       );
     }
     return List.generate(memoMapList.length, (i) {
@@ -69,6 +71,7 @@ class AppDatabase {
         id: memoMapList[i][memoId],
         date: DateTime.parse(memoMapList[i][memoDate]),
         name: memoMapList[i][memoName],
+        affiliation: memoMapList[i][memoAffiliation],
         memo: memoMapList[i][memoMemo],
         category: memoMapList[i][memoCategory],
         imagePath: memoMapList[i][memoImagePath],
