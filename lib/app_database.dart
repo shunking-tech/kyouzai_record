@@ -1,14 +1,14 @@
-import 'package:kouzai_record/memo.dart';
+import 'package:kouzai_record/person.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-const String memoTableName = "memo";
-const String memoId = "id";
-const String memoName = "name";
-const String memoAffiliation = "affiliation";
-const String memoMemo = "memo";
-const String memoCategory = "category";
-const String memoImagePath = "image_path";
+const String personTableName = "person";
+const String personId = "id";
+const String personName = "name";
+const String personAffiliation = "affiliation";
+const String personMemo = "memo";
+const String personCategory = "category";
+const String personImagePath = "image_path";
 
 class AppDatabase {
   // データベースのコントローラーを取得する
@@ -29,13 +29,13 @@ class AppDatabase {
         // メモ情報を保存するためのテーブル(表)を作成
         return db.execute(
           '''
-          CREATE TABLE $memoTableName(
-            $memoId INTEGER PRIMARY KEY,
-            $memoName TEXT,
-            $memoAffiliation TEXT,
-            $memoMemo TEXT,
-            $memoCategory TEXT,
-            $memoImagePath TEXT
+          CREATE TABLE $personTableName(
+            $personId INTEGER PRIMARY KEY,
+            $personName TEXT,
+            $personAffiliation TEXT,
+            $personMemo TEXT,
+            $personCategory TEXT,
+            $personImagePath TEXT
           )
           ''',
         );
@@ -43,54 +43,54 @@ class AppDatabase {
     );
   }
 
-  Future<void> insertMemo(MemoModel memoModel) async {
+  Future<void> insertPerson(PersonModel personModel) async {
     final Database db = await database;
     await db.insert(
-      memoTableName,
-      memoModel.toMap(),
+      personTableName,
+      personModel.toMap(),
     );
   }
 
-  Future<List<MemoModel>> getMemos(String keyword) async {
+  Future<List<PersonModel>> getPersonList(String keyword) async {
     final Database db = await database;
-    List<Map<String, dynamic>> memoMapList;
+    List<Map<String, dynamic>> personMapList;
     if (keyword.isEmpty) {
-      memoMapList = await db.query(memoTableName, orderBy: "$memoId DESC");
+      personMapList = await db.query(personTableName, orderBy: "$personId DESC");
     } else {
-      memoMapList = await db.query(
-        memoTableName,
-        orderBy: "$memoId DESC",
-        where: "$memoName LIKE ? OR $memoMemo LIKE ? OR $memoAffiliation LIKE ?",
+      personMapList = await db.query(
+        personTableName,
+        orderBy: "$personId DESC",
+        where: "$personName LIKE ? OR $personMemo LIKE ? OR $personAffiliation LIKE ?",
         whereArgs: ["%$keyword%", "%$keyword%", "%$keyword%"]
       );
     }
-    return List.generate(memoMapList.length, (i) {
-      return MemoModel(
-        id: memoMapList[i][memoId],
-        name: memoMapList[i][memoName],
-        affiliation: memoMapList[i][memoAffiliation],
-        memo: memoMapList[i][memoMemo],
-        category: memoMapList[i][memoCategory],
-        imagePath: memoMapList[i][memoImagePath],
+    return List.generate(personMapList.length, (i) {
+      return PersonModel(
+        id: personMapList[i][personId],
+        name: personMapList[i][personName],
+        affiliation: personMapList[i][personAffiliation],
+        memo: personMapList[i][personMemo],
+        category: personMapList[i][personCategory],
+        imagePath: personMapList[i][personImagePath],
       );
     });
   }
 
-  Future<void> updateMemo(MemoModel memoModel) async {
+  Future<void> updatePerson(PersonModel personModel) async {
     final Database db = await database;
     await db.update(
-      memoTableName,
-      memoModel.toMap(),
-      where: "$memoId = ?",
-      whereArgs: [memoModel.id],
+      personTableName,
+      personModel.toMap(),
+      where: "$personId = ?",
+      whereArgs: [personModel.id],
     );
   }
 
-  Future<void> deleteMemo(int id) async {
+  Future<void> deletePerson(int id) async {
     final Database db = await database;
     await db.delete(
-      memoTableName,
-      where: "$memoId = ?",
+      personTableName,
+      where: "$personId = ?",
       whereArgs: [id],
     );
   }

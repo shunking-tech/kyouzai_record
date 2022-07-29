@@ -1,7 +1,7 @@
 import 'package:kouzai_record/app_database.dart';
 import 'package:sqflite/sqflite.dart';
 
-class MemoModel {
+class PersonModel {
   final int? id;
   final String? name;
   final String? affiliation;
@@ -9,16 +9,16 @@ class MemoModel {
   final String? category;
   final String? imagePath;
 
-  MemoModel({this.id, this.name, this.affiliation, this.memo, this.category, this.imagePath});
+  PersonModel({this.id, this.name, this.affiliation, this.memo, this.category, this.imagePath});
 
   Map<String, dynamic> toMap() {
     return {
-      memoId: id,
-      memoName: name,
-      memoAffiliation: affiliation,
-      memoMemo: memo,
-      memoCategory: category,
-      memoImagePath: imagePath,
+      personId: id,
+      personName: name,
+      personAffiliation: affiliation,
+      personMemo: memo,
+      personCategory: category,
+      personImagePath: imagePath,
     };
   }
 }

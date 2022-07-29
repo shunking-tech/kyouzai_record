@@ -6,12 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kouzai_record/app_database.dart';
 import 'package:kouzai_record/logic/datetime_logic.dart';
-import 'package:kouzai_record/memo.dart';
+import 'package:kouzai_record/person.dart';
 import 'package:path_provider/path_provider.dart';
 
 class EditData extends StatefulWidget {
-  final MemoModel? memoModel;
-  const EditData({Key? key, this.memoModel}) : super(key: key);
+  final PersonModel? personModel;
+  const EditData({Key? key, this.personModel}) : super(key: key);
 
   @override
   State<EditData> createState() => _EditDataState();
@@ -30,13 +30,13 @@ class _EditDataState extends State<EditData> {
   @override
   void initState() {
     super.initState();
-    if (widget.memoModel != null) {
+    if (widget.personModel != null) {
       print("更新");
-      nameController.text = widget.memoModel!.name!;
-      affiliationController.text = widget.memoModel!.affiliation!;
-      memoEditingController.text = widget.memoModel!.memo!;
-      selectedCategory = widget.memoModel!.category!;
-      saveFilePath = widget.memoModel!.imagePath;
+      nameController.text = widget.personModel!.name!;
+      affiliationController.text = widget.personModel!.affiliation!;
+      memoEditingController.text = widget.personModel!.memo!;
+      selectedCategory = widget.personModel!.category!;
+      saveFilePath = widget.personModel!.imagePath;
       if (saveFilePath != null) {
         saveFile = File(saveFilePath!);
       }
@@ -51,7 +51,7 @@ class _EditDataState extends State<EditData> {
         appBar: AppBar(
           title: Text("編集画面"),
           actions: [
-            if (widget.memoModel != null)
+            if (widget.personModel != null)
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
@@ -70,7 +70,7 @@ class _EditDataState extends State<EditData> {
                           TextButton(
                             child: Text("削除する", style: TextStyle(color: Colors.red),),
                             onPressed: () async {
-                              await AppDatabase().deleteMemo(widget.memoModel!.id!);
+                              await AppDatabase().deletePerson(widget.personModel!.id!);
                               Navigator.popUntil(context, (route) => route.isFirst);
                             },
                           ),
@@ -222,19 +222,19 @@ class _EditDataState extends State<EditData> {
           print("写真");
           print(saveFile?.path);
 
-          // 入力した値をmemoModelに持たせる
-          MemoModel memoModel = MemoModel(
-            id: widget.memoModel?.id,
+          // 入力した値をpersonModelに持たせる
+          PersonModel personModel = PersonModel(
+            id: widget.personModel?.id,
             name: nameController.text,
             affiliation: affiliationController.text,
             memo: memoEditingController.text,
             category: selectedCategory,
             imagePath: saveFilePath,
           );
-          if (widget.memoModel != null) { // 追加ボタンから編集画面を開いた時は、新規データを追加する
-            await AppDatabase().updateMemo(memoModel);  // データを更新する
+          if (widget.personModel != null) { // 追加ボタンから編集画面を開いた時は、新規データを追加する
+            await AppDatabase().updatePerson(personModel);  // データを更新する
           } else {  // データ一覧から選択して編集画面を開いた時は、既存のデータを更新する
-            await AppDatabase().insertMemo(memoModel);  // 入力した値をデータベースに追加する
+            await AppDatabase().insertPerson(personModel);  // 入力した値をデータベースに追加する
           }
 
           Navigator.pop(context);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kouzai_record/app_database.dart';
 import 'package:kouzai_record/logic/datetime_logic.dart';
-import 'package:kouzai_record/memo.dart';
+import 'package:kouzai_record/person.dart';
 import 'package:kouzai_record/page/edit_data.dart';
 
 class Home extends StatefulWidget {
@@ -44,24 +44,24 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: FutureBuilder(
-        future: AppDatabase().getMemos(searchText.text),
+        future: AppDatabase().getPersonList(searchText.text),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           } else {
-            List<MemoModel> memoModelList = snapshot.data as List<MemoModel>;
+            List<PersonModel> personModelList = snapshot.data as List<PersonModel>;
             return ListView.separated(
               separatorBuilder: (context, index) {
                 return Divider(color: Colors.black, height: 1,);
               },
-              itemCount: memoModelList.length,
+              itemCount: personModelList.length,
               itemBuilder: (context, index) {
-                MemoModel memoModelItem = memoModelList[index];
+                PersonModel personModelItem = personModelList[index];
                 return ListTile(
-                  title: Text(memoModelItem.name!),
+                  title: Text(personModelItem.name!),
                   onTap: () async {
                     await Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => EditData(memoModel: memoModelItem,)
+                        builder: (context) => EditData(personModel: personModelItem,)
                     ));
                     setState(() {});
                   },
