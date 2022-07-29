@@ -3,19 +3,17 @@ import 'package:sqflite/sqflite.dart';
 
 class MemoModel {
   final int? id;
-  final DateTime? date;
   final String? name;
   final String? affiliation;
   final String? memo;
   final String? category;
   final String? imagePath;
 
-  MemoModel({this.id, this.date, this.name, this.affiliation, this.memo, this.category, this.imagePath});
+  MemoModel({this.id, this.name, this.affiliation, this.memo, this.category, this.imagePath});
 
   Map<String, dynamic> toMap() {
     return {
       memoId: id,
-      memoDate: date.toString(),
       memoName: name,
       memoAffiliation: affiliation,
       memoMemo: memo,

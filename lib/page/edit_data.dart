@@ -18,7 +18,6 @@ class EditData extends StatefulWidget {
 }
 
 class _EditDataState extends State<EditData> {
-  DateTime dateTime = DateTime.now();
   TextEditingController nameController = TextEditingController();
   TextEditingController affiliationController = TextEditingController();
   TextEditingController memoEditingController = TextEditingController();
@@ -33,7 +32,6 @@ class _EditDataState extends State<EditData> {
     super.initState();
     if (widget.memoModel != null) {
       print("更新");
-      dateTime = DateTime.parse(widget.memoModel!.date.toString());
       nameController.text = widget.memoModel!.name!;
       affiliationController.text = widget.memoModel!.affiliation!;
       memoEditingController.text = widget.memoModel!.memo!;
@@ -89,7 +87,6 @@ class _EditDataState extends State<EditData> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                datePickerButton(),
                 nameTextField(),
                 affiliationTextField(),
                 memoTextField(),
@@ -106,29 +103,6 @@ class _EditDataState extends State<EditData> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget datePickerButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        child: Text(DatetimeLogic.formatDate(dateTime)),
-        onPressed: () async {
-          DateTime? picked = await showDatePicker(
-              context: context,
-              locale: Locale("ja"),
-              initialDate: dateTime,
-              firstDate: DateTime(2020),
-              lastDate: DateTime.now().add(Duration(days: 365))
-          );
-          if(picked != null) {
-            setState(() {
-              dateTime = picked;
-            });
-          }
-        },
       ),
     );
   }
@@ -230,8 +204,6 @@ class _EditDataState extends State<EditData> {
         style: ElevatedButton.styleFrom(primary: Colors.indigo),
         child: Text("保存"),
         onPressed: () async {
-          print("日時");
-          print(dateTime);
           print("タイトル");
           print(nameController.text);
           print("メモ");
@@ -253,7 +225,6 @@ class _EditDataState extends State<EditData> {
           // 入力した値をmemoModelに持たせる
           MemoModel memoModel = MemoModel(
             id: widget.memoModel?.id,
-            date: dateTime,
             name: nameController.text,
             affiliation: affiliationController.text,
             memo: memoEditingController.text,

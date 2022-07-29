@@ -4,7 +4,6 @@ import 'package:sqflite/sqflite.dart';
 
 const String memoTableName = "memo";
 const String memoId = "id";
-const String memoDate = "date";
 const String memoName = "name";
 const String memoAffiliation = "affiliation";
 const String memoMemo = "memo";
@@ -32,7 +31,6 @@ class AppDatabase {
           '''
           CREATE TABLE $memoTableName(
             $memoId INTEGER PRIMARY KEY,
-            $memoDate TEXT,
             $memoName TEXT,
             $memoAffiliation TEXT,
             $memoMemo TEXT,
@@ -57,7 +55,7 @@ class AppDatabase {
     final Database db = await database;
     List<Map<String, dynamic>> memoMapList;
     if (keyword.isEmpty) {
-      memoMapList = await db.query(memoTableName, orderBy: "$memoDate DESC");
+      memoMapList = await db.query(memoTableName, orderBy: "$memoId DESC");
     } else {
       memoMapList = await db.query(
         memoTableName,
@@ -69,7 +67,6 @@ class AppDatabase {
     return List.generate(memoMapList.length, (i) {
       return MemoModel(
         id: memoMapList[i][memoId],
-        date: DateTime.parse(memoMapList[i][memoDate]),
         name: memoMapList[i][memoName],
         affiliation: memoMapList[i][memoAffiliation],
         memo: memoMapList[i][memoMemo],
