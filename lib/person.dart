@@ -8,8 +8,9 @@ class PersonModel {
   final String? memo;
   final String? category;
   final String? imagePath;
+  final String? createdAt;
 
-  PersonModel({this.id, this.name, this.affiliation, this.memo, this.category, this.imagePath});
+  PersonModel({this.id, this.name, this.affiliation, this.memo, this.category, this.imagePath, this.createdAt});
 
   Map<String, dynamic> toMap() {
     return {
@@ -19,6 +20,7 @@ class PersonModel {
       personMemo: memo,
       personCategory: category,
       personImagePath: imagePath,
+      personCreatedAt: createdAt,
     };
   }
 }

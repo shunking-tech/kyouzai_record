@@ -9,6 +9,7 @@ const String personAffiliation = "affiliation";
 const String personMemo = "memo";
 const String personCategory = "category";
 const String personImagePath = "image_path";
+const String personCreatedAt = "created_at";
 
 class AppDatabase {
   // データベースのコントローラーを取得する
@@ -21,9 +22,13 @@ class AppDatabase {
     // データベースの保存場所
     String path = join(await getDatabasesPath(), 'database.db');
 
+    const Map scripts = {
+      '2' : ['ALTER TABLE $personTableName ADD COLUMN $personCreatedAt TEXT;'],
+    };
+
     return await openDatabase(
       path, // データベースの保存場所
-      version: 1, // テーブル(表)の構造を変更する度に書き換えて+1増やす
+      version: 2, // テーブル(表)の構造を変更する度に書き換えて+1増やす
       onCreate: (db, version) {
         print("データベース作成");
         // メモ情報を保存するためのテーブル(表)を作成
@@ -35,10 +40,19 @@ class AppDatabase {
             $personAffiliation TEXT,
             $personMemo TEXT,
             $personCategory TEXT,
-            $personImagePath TEXT
+            $personImagePath TEXT,
+            $personCreatedAt TEXT
           )
           ''',
         );
+      },
+      onUpgrade: (Database db, int oldVersion, int newVersion) async {
+        for (var i = oldVersion + 1; i <= newVersion; i++) {
+          List queries = scripts[i.toString()];
+          for (String query in queries) {
+            await db.execute(query);
+          }
+        }
       },
     );
   }
@@ -72,6 +86,7 @@ class AppDatabase {
         memo: personMapList[i][personMemo],
         category: personMapList[i][personCategory],
         imagePath: personMapList[i][personImagePath],
+        createdAt: personMapList[i][personCreatedAt],
       );
     });
   }

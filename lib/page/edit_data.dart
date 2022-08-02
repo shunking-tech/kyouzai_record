@@ -230,6 +230,7 @@ class _EditDataState extends State<EditData> {
             memo: memoEditingController.text,
             category: selectedCategory,
             imagePath: saveFilePath,
+            createdAt: DateTime.now().toString(),
           );
           if (widget.personModel != null) { // 追加ボタンから編集画面を開いた時は、新規データを追加する
             await AppDatabase().updatePerson(personModel);  // データを更新する
